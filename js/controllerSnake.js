@@ -1,68 +1,38 @@
 let snake = document.getElementById("snake");
+let champ = document.getElementById("champ");
+
 let positionDeMonSnakeX = 600;
 let positionDeMonSnakeY = 100;
 
+let largeurDuSerpent = 10;
+let hauteurDuSerpent = 25;
 
-let direction = ""; 
+let direction = "";
+let intervalID = null;
 
 document.addEventListener("keydown", function(event) {
-    direction = event.key; 
+    direction = event.key;
 });
 
-setInterval(function() {
+// Lance une boucle
+intervalID = setInterval(function () {
     if (direction !== "") {
-        mouveSnake(direction); 
+        let champWidth = champ.clientWidth;
+        let champHeight = champ.clientHeight;
+
+        if (direction === "ArrowRight" && positionDeMonSnakeX + largeurDuSerpent < champWidth) {
+            positionDeMonSnakeX += 10;
+        } else if (direction === "ArrowLeft" && positionDeMonSnakeX > 0) {
+            positionDeMonSnakeX -= 10;
+        } else if (direction === "ArrowUp" && positionDeMonSnakeY > 0) {
+            positionDeMonSnakeY -= 10;
+        } else if (direction === "ArrowDown" && positionDeMonSnakeY + hauteurDuSerpent < champHeight) {
+            positionDeMonSnakeY += 10;
+        } else {
+            clearInterval(intervalID) + alert("GAME OVER");; // Stop si collision
+        }
+
+        snake.style.left = positionDeMonSnakeX + "px";
+        snake.style.top = positionDeMonSnakeY + "px";
     }
-}, 100); 
-
-
-function mouveSnakeDown() {
-    positionDeMonSnakeY += 10;
-    snake.style.top = positionDeMonSnakeY + "px";
-}
-
-function mouveSnakeUp() {
-    positionDeMonSnakeY -= 10;
-    snake.style.top = positionDeMonSnakeY + "px";
-}
-
-function mouveSnakeLeft() {
-    positionDeMonSnakeX -= 10;
-    snake.style.left = positionDeMonSnakeX + "px";
-}
-
-function mouveSnakeRight() {
-    positionDeMonSnakeX += 10;
-    snake.style.left = positionDeMonSnakeX + "px";
-    
-}
-
-let keydownSave = "";
-
-document.addEventListener('keydown', function (event) {
-    mouveSnake(event.key);
-});
-
-
-
-function mouveSnake(keydown){
-    if (keydown == "ArrowRight") {
-        mouveSnakeRight();
-        
-    }
-    if (keydown == "ArrowLeft") {
-        mouveSnakeLeft();
-        
-    }
-    if (keydown == "ArrowUp") {
-        mouveSnakeUp();
-        
-    }
-    if (keydown == "ArrowDown") {
-        mouveSnakeDown();
-        
-    }
-    
-}
-
-
+}, 300);
